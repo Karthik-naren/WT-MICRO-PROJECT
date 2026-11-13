@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FoodieHub - Food Ordering</title>
+ 
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+ 
+body {
+    background: #fff8f2;
+    color: #30231e;
+}
+ 
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 17px;
+    font-weight: bold;
+}
+ 
+.primary {
+    background: #ff741c;
+    color: white;
+}
+ 
+.primary:hover {
+    background: #e65d0b;
+}
+ 
+/* LOGIN */
+ 
+#loginScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #29130b, #8d3513, #ff741c);
+}
+ 
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 40px #0005;
+}
+ 
+.login-box h1 {
+    color: #ff741c;
+    margin-bottom: 12px;
+    font-size: 32px;
+}
+ 
+.login-box p {
+    color: #777;
+    margin: 12px 0;
+}
+ 
+.login-box input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+ 
+.login-box button {
+    width: 100%;
+    margin-top: 12px;
+}
+ 
+ 
+.auth-message {
+    min-height: 18px;
+    color: #b42318 !important;
+    font-size: 14px;
+}
+ 
+.auth-switch {
+    margin-top: 18px !important;
+    font-size: 14px;
+}
+ 
+.text-button {
+    background: transparent;
+    color: #d9520c;
+    padding: 4px;
+    text-decoration: underline;
+}
+ 
+.text-button:hover {
+    color: #8d3513;
+}
+ 
+/* HEADER */
+ 
+header {
+    background: #29130b;
+    color: white;
+    padding: 18px 7%;
+}
+ 
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+ 
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #ff8a3d;
+}
+ 
+.nav-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+ 
+.nav-actions button {
+    background: #ff741c;
+    color: white;
+}
+ 
+/* HERO */
+ 
+.hero {
+    padding: 75px 20px;
+    text-align: center;
+    color: white;
+    background: linear-gradient(120deg, #54200e, #c44b16, #ff8a3d);
+}
+ 
+.hero h1 {
+    font-size: clamp(30px, 5vw, 48px);
+    margin-bottom: 15px;
+}
+ 
+.hero p {
+    font-size: 17px;
+    line-height: 1.6;
+}
+ 
+.container {
+    width: 88%;
+    max-width: 1200px;
+    margin: 35px auto;
+}
+ 
+.section-title {
+    margin: 35px 0 20px;
+    color: #8d3513;
+}
+ 
+/* SEARCH */
+ 
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+ 
+.search-bar input,
+.search-bar select {
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 0;
+}
+ 
+/* FOOD CARDS */
+ 
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+ 
+.food-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px #00000012;
+    transition: transform .2s;
+}
+ 
+.food-card:hover {
+    transform: translateY(-5px);
+}
+ 
+.food-image {
+    height: 175px;
+    width: 100%;
+    object-fit: cover;
+}
+ 
+.food-info {
+    padding: 18px;
+}
+ 
+.food-info h3 {
+    margin-bottom: 10px;
+    color: #51230f;
+}
+ 
+.food-info p {
+    color: #777;
+    margin-bottom: 12px;
+}
+ 
+.price {
+    color: #e65d0b;
+    font-weight: bold;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+ 
+.food-info button {
+    width: 100%;
+}
+ 
+/* CART */
+ 
+.cart-box {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #00000010;
+}
+ 
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+}
+ 
+.cart-total {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e65d0b;
+    margin: 20px 0;
+}
+ 
+/* FOOTER */
+ 
+footer {
+    background: #29130b;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+}
+ 
+/* RESPONSIVE */
+ 
+@media(max-width: 850px) {
+    .food-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+ 
+@media(max-width: 550px) {
+    .food-grid {
+        grid-template-columns: 1fr;
+    }
+ 
+    .search-bar {
+        flex-direction: column;
+    }
+ 
+    .container {
+        width: 92%;
+    }
+ 
+    .hero {
+        padding: 50px 15px;
+    }
+}
+
+/* DARK MODE: the saved theme applies across the menu, cart, and account screen */
+body, .login-box, .food-card, .cart-box, .search-bar input, .search-bar select, .login-box input {
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+}
+body.dark-mode { background: #171412; color: #f5eee9; }
+body.dark-mode .login-box, body.dark-mode .food-card, body.dark-mode .cart-box {
+    background: #26211e; color: #f5eee9;
+}
+body.dark-mode .login-box p, body.dark-mode .food-info p { color: #c6b9b1; }
+body.dark-mode .food-info h3, body.dark-mode .section-title { color: #ffad75; }
+body.dark-mode .search-bar input, body.dark-mode .search-bar select, body.dark-mode .login-box input {
+    background: #332d29; color: #fff8f2; border-color: #66584f;
+}
+body.dark-mode input::placeholder { color: #c6b9b1; }
+body.dark-mode .cart-item { border-color: #514740; }
+body.dark-mode .nav-actions .theme-toggle { background: #f4e5d9; color: #29130b; }
+.theme-toggle:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 3px solid #ffad75; outline-offset: 2px;
+}
+</style>
+</head>
+ 
+<body>
+ 
+<!-- LOGIN AND SIGN-UP INTERFACE -->
+<section id="loginScreen">
+    <div class="login-box">
+        <h1>🍔 FoodieHub</h1>
+ 
+        <div id="loginPanel">
+            <h2>Welcome Back!</h2>
+            <p>Login to discover delicious food.</p>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Enter your email" autocomplete="email" required>
+                <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" minlength="6" required>
+                <button class="primary" type="submit">Login</button>
+                <p id="loginMessage" class="auth-message" role="alert"></p>
+            </form>
+            <p class="auth-switch">New to FoodieHub?
+                <button class="text-button" type="button" onclick="showAuthForm('signup')">Create an account</button>
+            </p>
+        </div>
+ 
+        <div id="signupPanel" hidden>
+            <h2>Create Account</h2>
+            <p>Sign up to start exploring the menu.</p>
+            <form id="signupForm">
+                <input type="text" id="signupName" placeholder="Enter your name" autocomplete="name" minlength="2" required>
+                <input type="email" id="signupEmail" placeholder="Enter your email" autocomplete="email" required>
+                <input type="password" id="signupPassword" placeholder="Create a password (at least 6 characters)" autocomplete="new-password" minlength="6" required>
+                <input type="password" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password" minlength="6" required>
+                <button class="primary" type="submit">Sign Up</button>
+                <p id="signupMessage" class="auth-message" role="alert"></p>
+            </form>
+            <p class="auth-switch">Already have an account?
+                <button class="text-button" type="button" onclick="showAuthForm('login')">Login</button>
+            </p>
+        </div>
+    </div>
+</section>
+ 
+ 
+<div id="mainWebsite" hidden>
+ 
+<header>
+    <nav class="navbar">
+ 
+        <div class="logo">🍔 FoodieHub</div>
+ 
+        <div class="nav-actions">
+            <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Switch to dark mode">🌙 Dark Mode</button>
+            <button onclick="showCart()">
+                🛒 Cart (<span id="cartCount">0</span>)
+            </button>
+ 
+            <button onclick="logout()">
+                Logout
+            </button>
+        </div>
+ 
+    </nav>
+</header>
+ 
+<section class="hero">
+ 
+    <h1>Good Food, Great Mood! 🍕</h1>
+ 
+    <p>
+        Discover your favourite meals and order delicious food.
+        Fresh flavours delivered to your doorstep!
+    </p>
+ 
+</section>
+ 
+<main class="container">
+ 
+    <h2 class="section-title">🍽️ Explore Our Menu</h2>
+ 
+    <div class="search-bar">
+ 
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search your favourite food..."
+        >
+ 
+        <select id="categoryFilter">
+            <option value="All">All Categories</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Burger">Burger</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Drinks">Drinks</option>
+        </select>
+ 
+    </div>
+ 
+    <section class="food-grid" id="foodGrid"></section>
+ 
+    <h2 class="section-title" id="cartSection">
+        🛒 Your Shopping Cart
+    </h2>
+ 
+    <section class="cart-box">
+ 
+        <div id="cartItems">
+            Your cart is empty.
+        </div>
+ 
+        <div class="cart-total">
+            Total: ₹<span id="cartTotal">0</span>
+        </div>
+ 
+        <button class="primary" onclick="checkout()">
+            Place Order
+        </button>
+ 
+    </section>
+ 
+</main>
+ 
+<footer>
+    <p>© 2026 FoodieHub | Delicious Food, Happy Moments ❤️</p>
+</footer>
+ 
+</div>
+ 
+<script>
+ 
+ 
+/* THEME SWITCHER */
+const themeStorageKey = "foodieHubTheme";
+
+function applyTheme(theme) {
+    const isDark = theme === "dark";
+    document.body.classList.toggle("dark-mode", isDark);
+    const button = document.getElementById("themeToggle");
+    if (button) {
+        button.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+        button.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+        button.setAttribute("aria-pressed", String(isDark));
+    }
+}
+
+function toggleTheme() {
+    const nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+    applyTheme(nextTheme);
+    try { localStorage.setItem(themeStorageKey, nextTheme); } catch (error) { }
+}
+
+let savedTheme = "light";
+try { savedTheme = localStorage.getItem(themeStorageKey) || "light"; } catch (error) { }
+applyTheme(savedTheme);
+const foods = [
+    {
+        id: 1,
+        name: "Margherita Pizza",
+        category: "Pizza",
+        price: 249,
+        image: "pizza.jpeg"
+    },
+    {
+        id: 2,
+        name: "Cheese Burger",
+        category: "Burger",
+        price: 149,
+        image: "burger.jpeg"
+    },
+    {
+        id: 3,
+        name: "Chocolate Cake",
+        category: "Dessert",
+        price: 199,
+        image: "cake.jpeg"
+    },
+    {
+        id: 4,
+        name: "French Fries",
+        category: "Burger",
+        price: 99,
+        image: "frenc.jpg"
+    },
+    {
+        id: 5,
+        name: "Cold Coffee",
+        category: "Drinks",
+        price: 119,
+        image: "coffe.jpeg"
+    },
+    {
+        id: 6,
+        name: "Pepperoni Pizza",
+        category: "Pizza",
+        price: 299,
+        image: "pep pizza.jpeg"
+    }
+];
+ 
+let cart = [];
+ 
+/* LOGIN AND SIGN-UP */
+ 
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
+ 
+function getRegisteredUsers() {
+    try {
+        return JSON.parse(localStorage.getItem("foodieHubUsers") || "[]");
+    } catch (error) {
+        return [];
+    }
+}
+ 
+function showAuthForm(formName) {
+    const showSignup = formName === "signup";
+    document.getElementById("loginPanel").hidden = showSignup;
+    document.getElementById("signupPanel").hidden = !showSignup;
+    document.getElementById("loginMessage").textContent = "";
+    document.getElementById("signupMessage").textContent = "";
+}
+ 
+signupForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+ 
+    const name = document.getElementById("signupName").value.trim();
+    const email = document.getElementById("signupEmail").value.trim().toLowerCase();
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const message = document.getElementById("signupMessage");
+ 
+    if (name.length < 2) {
+        message.textContent = "Please enter a name with at least 2 characters.";
+        return;
+    }
+ 
+    if (password.length < 6) {
+        message.textContent = "Password must contain at least 6 characters.";
+        return;
+    }
+ 
+    if (password !== confirmPassword) {
+        message.textContent = "The passwords do not match.";
+        return;
+    }
+ 
+    const users = getRegisteredUsers();
+    if (users.some(user => user.email === email)) {
+        message.textContent = "An account with this email already exists. Please login.";
+        return;
+    }
+ 
+    users.push({ name: name, email: email, password: password });
+    localStorage.setItem("foodieHubUsers", JSON.stringify(users));
+    signupForm.reset();
+    showAuthForm("login");
+    document.getElementById("loginEmail").value = email;
+    document.getElementById("loginMessage").textContent = "Account created. Please login with your new account.";
+});
+ 
+loginForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+ 
+    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
+    const message = document.getElementById("loginMessage");
+    const user = getRegisteredUsers().find(account =>
+        account.email === email && account.password === password
+    );
+ 
+    if (!user) {
+        message.textContent = "Account not found or password is incorrect. Please sign up or try again.";
+        return;
+    }
+ 
+    sessionStorage.setItem("foodieHubLoggedIn", "true");
+    sessionStorage.setItem("foodieHubName", user.name);
+    openWebsite();
+});
+ 
+function openWebsite() {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainWebsite").hidden = false;
+    renderFoods();
+    renderCart();
+}
+ 
+if (sessionStorage.getItem("foodieHubLoggedIn") === "true") {
+    openWebsite();
+}
+ 
+ 
+function renderFoods() {
+ 
+    const grid = document.getElementById("foodGrid");
+ 
+    const search = document.getElementById("searchInput")
+        .value.toLowerCase();
+ 
+    const category = document.getElementById("categoryFilter").value;
+ 
+    const filtered = foods.filter(food => {
+ 
+        return food.name.toLowerCase().includes(search) &&
+            (category === "All" || food.category === category);
+ 
+    });
+ 
+    grid.replaceChildren();
+ 
+    if (filtered.length === 0) {
+ 
+        grid.textContent = "No matching food found.";
+ 
+        return;
+ 
+    }
+ 
+    filtered.forEach(food => {
+ 
+        const card = document.createElement("article");
+        card.className = "food-card";
+ 
+        const image = document.createElement("img");
+        image.className = "food-image";
+        image.src = food.image;
+        image.alt = food.name;
+ 
+        const info = document.createElement("div");
+        info.className = "food-info";
+ 
+        const heading = document.createElement("h3");
+        heading.textContent = food.name;
+ 
+        const categoryText = document.createElement("p");
+        categoryText.textContent = food.category;
+ 
+        const price = document.createElement("div");
+        price.className = "price";
+        price.textContent = "₹" + food.price;
+ 
+        const button = document.createElement("button");
+        button.className = "primary";
+        button.textContent = "Add to Cart +";
+ 
+        button.addEventListener("click", function() {
+            addToCart(food.id);
+        });
+ 
+        info.append(heading, categoryText, price, button);
+ 
+        card.append(image, info);
+ 
+        grid.appendChild(card);
+ 
+    });
+ 
+}
+ 
+document.getElementById("searchInput")
+    .addEventListener("input", renderFoods);
+ 
+document.getElementById("categoryFilter")
+    .addEventListener("change", renderFoods);
+ 
+/* ADD TO CART */
+ 
+function addToCart(id) {
+ 
+    const food = foods.find(item => item.id === id);
+ 
+    const existing = cart.find(item => item.id === id);
+ 
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...food, quantity: 1});
+    }
+ 
+    renderCart();
+ 
+}
+ 
+ 
+function renderCart() {
+ 
+    const container = document.getElementById("cartItems");
+ 
+    container.replaceChildren();
+ 
+    let total = 0;
+    let count = 0;
+ 
+    if (cart.length === 0) {
+ 
+        container.textContent = "Your cart is empty.";
+ 
+    }
+ 
+    cart.forEach(item => {
+ 
+        total += item.price * item.quantity;
+        count += item.quantity;
+ 
+        const row = document.createElement("div");
+        row.className = "cart-item";
+ 
+        const name = document.createElement("span");
+ 
+        name.textContent =
+            item.name + " × " + item.quantity;
+ 
+        const amount = document.createElement("strong");
+ 
+        amount.textContent =
+            "₹" + item.price * item.quantity;
+ 
+        row.append(name, amount);
+ 
+        container.appendChild(row);
+ 
+    });
+ 
+    document.getElementById("cartTotal").textContent = total;
+ 
+    document.getElementById("cartCount").textContent = count;
+ 
+}
+ 
+/* CART NAVIGATION */
+ 
+function showCart() {
+ 
+    document.getElementById("cartSection")
+        .scrollIntoView({behavior: "smooth"});
+ 
+}
+ 
+
+ 
+function checkout() {
+ 
+    if (cart.length === 0) {
+ 
+        alert("Please add food to your cart first!");
+ 
+        return;
+ 
+    }
+ 
+    if (!confirm("Are you sure you want to place this order?")) {
+        return;
+    }
+ 
+    alert("🎉 Order placed successfully! Thank you for choosing FoodieHub.");
+ 
+    cart = [];
+ 
+    renderCart();
+ 
+}
+ 
+/* LOGOUT */
+ 
+function logout() {
+ 
+    if (confirm("Are you sure you want to logout?")) {
+ 
+        sessionStorage.removeItem("foodieHubLoggedIn");
+        sessionStorage.removeItem("foodieHubName");
+ 
+        cart = [];
+ 
+        location.reload();
+ 
+    }
+ 
+}
+ 
+
+window.addEventListener("beforeunload", function(event) {
+ 
+    if (
+        sessionStorage.getItem("foodieHubLoggedIn") === "true"
+    ) {
+ 
+        event.preventDefault();
+ 
+        event.returnValue = "";
+ 
+    }
+ 
+});
+ 
+</script>
+ 
+</body>
+</html>
